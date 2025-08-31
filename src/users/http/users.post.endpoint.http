@@ -5,5 +5,5 @@ Content-Type: application/json
   "firstName": "Nizar",
   "lastName": "ILAHI",
   "email": "nizar@gmail.com",
-  "password": "pass12345"
+  "password": "pass@12345"
 }
