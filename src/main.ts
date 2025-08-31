@@ -7,6 +7,7 @@ async function bootstrap() {
   app.useGlobalPipes(new ValidationPipe({
     whitelist: true,
     forbidNonWhitelisted: true,
+    transform: true, // this, transform incoming body requests to an appropriate DTO instance class after validation.
   }));
   await app.listen(process.env.PORT ?? 3000);
 }

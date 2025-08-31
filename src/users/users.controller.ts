@@ -7,21 +7,20 @@ import {
   ParseIntPipe,
   Post,
   Query,
-  ValidationPipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
+import { GetUserParamDto } from './dtos/get-user-param.dto';
 
 @Controller('users')
 export class UsersController {
 
   @Get('/:id?')
   public getUsers(
-    @Param('id', ParseIntPipe) id: number | undefined,
+    @Param() getUserParamDto: GetUserParamDto,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
   ): string {
-    console.log(limit);
-    console.log(page);
+    console.log(getUserParamDto);
     return 'You sent a GET request to \'/users\' endpoint.';
   }
 
