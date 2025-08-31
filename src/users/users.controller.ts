@@ -26,7 +26,7 @@ export class UsersController {
   }
 
   @Post()
-  public createUsers(@Body(new ValidationPipe()) createUserDto: CreateUserDto): string {
+  public createUsers(@Body() createUserDto: CreateUserDto): string {
     console.log(createUserDto);
     return 'You sent a POST request to \'/users\' endpoint.';
   }
