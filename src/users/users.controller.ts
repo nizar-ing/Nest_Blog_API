@@ -1,38 +1,55 @@
+
 import {
-  Body,
   Controller,
-  DefaultValuePipe,
   Get,
   Param,
-  ParseIntPipe, Patch,
+  Patch,
   Post,
   Query,
+  Body,
+  ParseIntPipe,
+  DefaultValuePipe,
 } from '@nestjs/common';
 import { CreateUserDto } from './dtos/create-user.dto';
-import { GetUserParamDto } from './dtos/get-user-param.dto';
-import { PatchUserDTO } from './dtos/patch-user.dto';
+import { GetUsersParamDto } from './dtos/get-users-param.dto';
+import { PatchUsersDto } from './dtos/patch-users.dto';
+import { UsersService } from './providers/users.service';
 
 @Controller('users')
 export class UsersController {
+  constructor(
+    // Injecting Users Service
+    private readonly usersService: UsersService,
+  ) {}
+
+  /**
+   * Final Endpoint - /users/id?limit=10&page=1
+   * Parama id - optional, convert to integer, cannot have a default value
+   * Query limit - integer, default 10
+   * Query page - integer, default value 1
+   * ==> USE CASES
+   * /users/ -> return all users with default pagination
+   * /users/1223 -> returns one user whos id is 1234
+   * /users?limit=10&page=2 -> return page 2 with limt of pagination 10
+   */
 
   @Get('/:id?')
   public getUsers(
-    @Param() getUserParamDto: GetUserParamDto,
+    @Param() getUserParamDto: GetUsersParamDto,
     @Query('limit', new DefaultValuePipe(10), ParseIntPipe) limit: number,
     @Query('page', new DefaultValuePipe(1), ParseIntPipe) page: number,
-  ): string {
-    console.log(getUserParamDto);
-    return 'You sent a GET request to \'/users\' endpoint.';
+  ) {
+    return this.usersService.findAll(getUserParamDto, limit, page);
   }
 
   @Post()
-  public createUsers(@Body() createUserDto: CreateUserDto): string {
-    console.log(createUserDto);
-    return 'You sent a POST request to \'/users\' endpoint.';
+  public createUsers(@Body() createUserDto: CreateUserDto) {
+    console.log(createUserDto instanceof CreateUserDto);
+    return 'You sent a post request to users endpoint';
   }
 
   @Patch()
-  public patchUser(@Body() patchUserDto: PatchUserDTO){
+  public patchUser(@Body() patchUserDto: PatchUsersDto) {
     return patchUserDto;
   }
 }
