@@ -14,6 +14,6 @@ export class AuthService {
   }
 
   public isAuth(){
-    return false;
+    return true;
   }
 }
